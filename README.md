@@ -1,8 +1,10 @@
-# Extract Settings APK from ROM
+## Firmware-Content-Extractor
 
-This GitHub Action extracts the Settings APK from a `.zip` firmware file for most Xiaomi HyperOS devices.
+- GitHub Action 1 : extracts the Settings APK from a `.zip` firmware file for most Xiaomi HyperOS devices.
 
-## Usage
+- GitHub Action 2 : extracts the boot.img from a `.zip`
+
+### Usage
 
 - Fork the repository and trigger the GitHub Action.
 
