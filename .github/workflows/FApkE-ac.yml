@@ -1,0 +1,84 @@
+name: erofs & mount
+
+on:
+  workflow_dispatch:
+    inputs:
+      firmware_url:
+        description: 'Please enter the firmware URL'
+        required: true
+        type: string
+
+jobs:
+  extract_firmware:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Extract version from firmware URL
+        run: |
+          URL=${{ github.event.inputs.firmware_url }}
+          VERSION=$(basename "${{ github.event.inputs.firmware_url }}" .zip)
+          VERSION_NAME="Settings_${VERSION}"
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+          echo "URL=$URL" >> $GITHUB_ENV
+
+      - name: verify 
+        run: |
+          echo "URL: ${URL}"
+          echo "VERSION_NAME: ${VERSION_NAME}"
+
+      - name: setup
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install protobuf==5.27.2 six==1.16.0 bsdiff4==1.1.5 brotli==1.1.0
+          pip install zstandard
+          git clone https://github.com/vm03/payload_dumper.git
+          curl -L -o "erofs-utils.zip" "https://github.com/sekaiacg/erofs-utils/releases/download/v1.8.1-240810/erofs-utils-v1.8.1-gddbed144-Linux_x86_64-2408101422.zip"
+          unzip erofs-utils.zip -d erofs-utils_extracted
+
+      - name: Download firmware
+        run: |
+          echo "Downloading firmware..."
+          curl -L -o "firmware.zip" "${URL}"
+          if [ $? -ne 0 ]; then
+            echo "Error: Failed to download firmware."
+            exit 1
+          fi
+          unzip firmware.zip -d firmware_extracted
+          if [ $? -ne 0 ]; then
+            echo "Error: Failed to unzip firmware."
+            exit 1
+          fi
+
+      - name: get system_ext.img from payload.bin
+        run: |
+          python3 payload_dumper/payload_dumper.py --images system_ext firmware_extracted/payload.bin
+      
+      - name: Extract APK from system_ext.img
+        run: |
+          if ! ./erofs-utils_extracted/extract.erofs -i ./output/system_ext.img -x -o .; then
+            sudo mount -o loop ./output/system_ext.img /system_ext
+            mv /system_ext/priv-app/Settings/Settings.apk .
+            sudo umount /system_ext
+          else
+            mv ./system_ext/priv-app/Settings/Settings.apk .
+          fi
+          mv Settings.apk ${VERSION_NAME}.apk
+          zip ${VERSION_NAME}.zip ${VERSION_NAME}.apk
+
+      - name: Create tag and release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="apk"
+          RELEASE_NAME="Firmware ${VERSION_NAME}"
+          if ! git fetch --tags && git tag | grep -q "$TAG_NAME"; then
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+          fi
+          RELEASE_ID=$(gh release view "$TAG_NAME" --json id --jq ".id" || echo "not_found")
+          if [ "$RELEASE_ID" = "not_found" ]; then
+            gh release create "$TAG_NAME" ${VERSION_NAME}.zip --title "$RELEASE_NAME" --notes "Firmware release for version $VERSION_NAME"
+          fi
