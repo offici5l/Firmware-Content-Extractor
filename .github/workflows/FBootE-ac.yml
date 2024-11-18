@@ -1,0 +1,93 @@
+name: get boot.img
+
+on:
+  workflow_dispatch:
+    inputs:
+      firmware_url:
+        description: 'Please enter the firmware URL'
+        required: true
+        type: string
+
+jobs:
+  extract_firmware:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Firmware URL
+        id: validate_title
+        run: |
+          if [ -z "${{ github.event.inputs.firmware_url }}" ]; then
+            echo "Firmware URL not provided. Exiting."
+            exit 1
+          else
+            FIRMWARE_URL="${{ github.event.inputs.firmware_url }}"
+            echo "FIRMWARE_URL=$FIRMWARE_URL" >> $GITHUB_ENV
+          fi
+
+      - name: Extract firmware name from URL
+        id: extract_name
+        run: |
+          FIRMWARE_NAME=$(basename "$FIRMWARE_URL" .zip)
+          echo "FIRMWARE_NAME=$FIRMWARE_NAME" >> $GITHUB_ENV
+          echo "Extracted firmware name: $FIRMWARE_NAME"
+
+      - name: Download firmware
+        run: |
+          curl -L -o "firmware.zip" "$FIRMWARE_URL"
+          unzip firmware.zip -d firmware_extracted
+
+      - name: Check for boot.img or payload.bin 
+        run: |
+          if find firmware_extracted -name "boot.img" -print -quit | grep -q 'boot.img'; then
+            echo "boot.img found, moving and renaming..."
+            mv firmware_extracted/boot.img ./boot.img
+            mv boot.img "boot-${{ env.FIRMWARE_NAME }}.img"
+            echo "boot.img renamed to boot-${{ env.FIRMWARE_NAME }}.img"
+          elif find firmware_extracted -name "payload.bin" -print -quit | grep -q 'payload.bin'; then
+            echo "payload.bin found, extracting boot.img..."
+            python3 -m pip install --upgrade pip
+            pip install protobuf==5.27.2 six==1.16.0 bsdiff4==1.1.5 brotli==1.1.0
+            pip install zstandard
+            git clone https://github.com/vm03/payload_dumper.git
+            cp firmware_extracted/payload.bin ./payload_dumper
+            cd payload_dumper
+            python3 payload_dumper.py --images boot payload.bin
+            cd ..
+            boot_img_path=$(find payload_dumper -name "boot.img" -print -quit)
+            if [ -n "$boot_img_path" ]; then
+              mv "$boot_img_path" "boot-${{ env.FIRMWARE_NAME }}.img"
+              echo "boot.img extracted and renamed to boot-${{ env.FIRMWARE_NAME }}.img"
+            else
+              echo "boot.img not found after extraction."
+              exit 1
+            fi
+          else
+            echo "Neither boot.img nor payload.bin found."
+            exit 1
+          fi
+
+      - name: Compress boot.img to .zip
+        run: |
+          zip "boot-${{ env.FIRMWARE_NAME }}.zip" "boot-${{ env.FIRMWARE_NAME }}.img"
+          echo "Compressed boot.img to boot-${{ env.FIRMWARE_NAME }}.zip"
+
+      - name: Create tag and release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="boot"
+          RELEASE_NAME="Firmware ${VERSION_NAME}"
+          if ! git fetch --tags && git tag | grep -q "$TAG_NAME"; then
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+          fi
+          RELEASE_ID=$(gh release view "$TAG_NAME" --json id --jq ".id" || echo "not_found")
+          if [ "$RELEASE_ID" = "not_found" ]; then
+            gh release create "$TAG_NAME" boot-${{ env.FIRMWARE_NAME }}.zip --title "$RELEASE_NAME" --notes "Firmware release for version $VERSION_NAME"
+          fi
+
+
+   
