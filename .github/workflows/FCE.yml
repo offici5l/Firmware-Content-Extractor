@@ -3,48 +3,62 @@ name: FCE
 on:
   workflow_dispatch:
     inputs:
-      firmware_url:
-        description: 'enter the firmware.zip URL'
+      get:
         required: true
-        type: string
-      extract_type:
-        description: 'Select what to extract'
+      url:
         required: true
-        type: choice
-        options:
-          - settings_apk
-          - boot_img
-          - both
+
+env:
+  GET: ${{ github.event.inputs.get }}
+  URL: ${{ github.event.inputs.url }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 jobs:
-  fce:
+  FCE:
     runs-on: ubuntu-latest
-
-    env:
-      BOOT_IMG: false
-      SETTINGS_APK: false
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      FIRMWARE_URL: ${{ github.event.inputs.firmware_url }}
-
     steps:
-      - name: Checkout repository
+
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set environment
+      - name: Validate
         run: |
-          FIRMWARE_NAME=$(basename "${{ github.event.inputs.firmware_url }}" .zip)
-          echo "FIRMWARE_NAME=$FIRMWARE_NAME" >> $GITHUB_ENV
+          [[ "$GET" == "settings_apk" || "$GET" == "boot_img" ]] || { echo "Only 'settings_apk' or 'boot_img' are allowed."; exit 1; }
+          curl --head --fail "$URL" && [[ "$URL" == *.zip ]] || { echo "Invalid or inaccessible URL."; exit 1; }
 
-          if [ "${{ github.event.inputs.extract_type }}" == "both" ]; then
-            echo "BOOT_IMG=true" >> $GITHUB_ENV
-            echo "SETTINGS_APK=true" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.extract_type }}" == "boot_img" ]; then
-            echo "BOOT_IMG=true" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.extract_type }}" == "settings_apk" ]; then
-            echo "SETTINGS_APK=true" >> $GITHUB_ENV
+          NAME=${GET}_$(basename "$URL")
+
+          if [ -f "$GET.md" ]; then
+            if grep -q "${NAME}" "$GET.md"; then
+              echo "${NAME} existing"
+              exit 1
+            fi
           fi
 
-      - name: Cache pip and tools dependencies
+          echo "NAME=$NAME" >> $GITHUB_ENV
+
+
+      - name: Config
+        run: |
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+          if ! git ls-remote --tags origin | grep -q "$GET"; then
+            git tag "$GET"
+            git push origin "$GET"
+          fi
+          if ! gh release view "$GET"; then
+            gh release create "$GET" --title "$GET" --notes "$GET"
+          fi
+          if [ ! -f "$GET.md" ]; then
+            echo "# $GET" > "$GET.md"
+            git add "$GET.md"
+            git commit -m "Add $GET.md"
+            git push
+          fi
+
+      - name: Cache
+        id: cache
         uses: actions/cache@v4
         with:
           path: |
@@ -54,7 +68,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache-
 
-      - name: Install dependencies
+      - name: Install
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           if [ ! -d tools ]; then
             sudo apt-get update && sudo apt-get install -y python3-pip p7zip-full aria2
@@ -64,40 +79,33 @@ jobs:
             pip install -r ./tools/requirements.txt
             rm -f erofs-utils.zip
           fi
-          
-      - name: Extract firmware name from URL
+
+      - name: Download
         run: |
-          aria2c -x 7 -s 7 -k 1M --continue --max-tries=0 --log=LOG --out='exrom.zip' "$FIRMWARE_URL"
+          aria2c -x 7 -s 7 -k 1M --continue --max-tries=0 --log=LOG --out='exrom.zip' "$URL"
           7z x exrom.zip -o./
           rm exrom.zip
 
-          if [ "$BOOT_IMG" == "true" ]; then
-            if [ ! -f "boot.img" ]; then
-              ./tools/payload_dumper.py --out . --images boot payload.bin
-            fi
-            7z a "Boot_img_${FIRMWARE_NAME}.zip" boot.img
-            rm boot.img
-            if ! git ls-remote --tags origin | grep -q "Boot_img"; then
-              git tag "Boot_img"
-              git push origin "Boot_img"
-            fi
-            if ! gh release view "Boot_img"; then
-              gh release create Boot_img --title "Boot_img" --notes "Boot_img"
-            fi          
-            gh release upload Boot_img "Boot_img_${FIRMWARE_NAME}.zip" --clobber
+      - name: GET boot_img
+        if: ${{ env.GET == 'boot_img' }}
+        run: |
+          if [ ! -f "boot.img" ]; then
+            ./tools/payload_dumper.py --out . --images boot payload.bin
           fi
+          7z a "${NAME}.zip" boot.img
 
-          if [ "$SETTINGS_APK" == "true" ]; then
-            ./tools/payload_dumper.py --out . --images system_ext payload.bin
-            sudo mkdir -p /mnt/priv-app/Settings && sudo chmod -R 777 /mnt && 7z x system_ext.img -o/mnt -y && sudo cp /mnt/priv-app/Settings/Settings.apk . && echo "method 1 used" || (./tools/extract.erofs -i system_ext.img -x -o . && cp system_ext/priv-app/Settings/Settings.apk . && echo "method 2 used" || (echo "both methods failed" && exit 1))
-            7z a "Settings_apk_${FIRMWARE_NAME}.zip" Settings.apk
-            rm Settings.apk
-            if ! git ls-remote --tags origin | grep -q "settings_apk"; then
-              git tag "settings_apk"
-              git push origin "settings_apk"
-            fi
-            if ! gh release view "settings_apk"; then
-              gh release create settings_apk --title "settings_apk" --notes "settings_apk"
-            fi          
-            gh release upload settings_apk "Settings_apk_${FIRMWARE_NAME}.zip" --clobber
-          fi
+      - name: GET settings_apk
+        if: ${{ env.GET == 'settings_apk' }}
+        run: |
+          ./tools/payload_dumper.py --out . --images system_ext payload.bin
+          sudo mkdir -p /mnt/priv-app/Settings && sudo chmod -R 777 /mnt && 7z x system_ext.img -o/mnt -y && sudo cp /mnt/priv-app/Settings/Settings.apk . && echo "method 1 used" || (./tools/extract.erofs -i system_ext.img -x -o . && cp system_ext/priv-app/Settings/Settings.apk . && echo "method 2 used" || (echo "both methods failed" && exit 1))
+          7z a "${NAME}.zip" Settings.apk
+
+      - name: Upload
+        run: |
+          gh release upload "$GET" "${NAME}.zip" --clobber
+          FILE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GET}/${NAME}.zip"
+          echo -e "___\n[$NAME]($FILE_URL)" >> "$GET.md"
+          git add "$GET.md"
+          git commit -m "Add ${NAME}"
+          git push
