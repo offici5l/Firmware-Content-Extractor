@@ -7,16 +7,18 @@ on:
         required: true
       url:
         required: true
+      Track:
+        required: false
 
 env:
   GET: ${{ github.event.inputs.get }}
   URL: ${{ github.event.inputs.url }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
 jobs:
   FCE:
     runs-on: ubuntu-latest
+    name: ${{ github.event.inputs.Track }} 
     steps:
 
       - name: Checkout
