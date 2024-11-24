@@ -1,0 +1,33 @@
+name: ${{ github.event.inputs.custom_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      custom_name:
+        description: 'Enter a custom name for this run'
+        required: true
+        default: 'default-name'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up environment
+        run: |
+          echo "Setting up environment..."
+
+      - name: Compile project
+        run: |
+          echo "Compiling the project..."
+
+      - name: Display the custom name
+        run: |
+          echo "Custom name for this run: ${{ github.event.inputs.custom_name }}"
+
+      - name: Display workflow name
+        run: |
+          echo "Workflow name: ${{ github.event.inputs.custom_name }}-${{ github.run_id }}"
