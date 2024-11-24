@@ -5,8 +5,7 @@ on:
     inputs:
       deploy_version:
         description: 'Version to deploy'
-        required: true
-        default: '1.0'
+        required: false
 
 jobs:
   build:
