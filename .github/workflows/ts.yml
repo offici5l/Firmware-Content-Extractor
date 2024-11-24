@@ -1,4 +1,4 @@
-name: ${{ github.event.inputs.custom_name }}
+name: ts
 
 on:
   workflow_dispatch:
@@ -16,18 +16,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up environment
+      - name: Compile the project with custom name: ${{ github.event.inputs.custom_name }}
         run: |
-          echo "Setting up environment..."
+          echo "Compiling project with name: ${{ github.event.inputs.custom_name }}"
 
-      - name: Compile project
-        run: |
-          echo "Compiling the project..."
-
-      - name: Display the custom name
+      - name: Display the custom name in step
         run: |
           echo "Custom name for this run: ${{ github.event.inputs.custom_name }}"
-
-      - name: Display workflow name
-        run: |
-          echo "Workflow name: ${{ github.event.inputs.custom_name }}-${{ github.run_id }}"
