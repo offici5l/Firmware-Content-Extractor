@@ -92,14 +92,14 @@ jobs:
           if [ ! -f "boot.img" ]; then
             ./tools/payload_dumper.py --out . --images boot payload.bin
           fi
-          7z a "${NAME}.zip" boot.img
+          7z a "${NAME}" boot.img
 
       - name: GET settings_apk
         if: ${{ env.GET == 'settings_apk' }}
         run: |
           ./tools/payload_dumper.py --out . --images system_ext payload.bin
           sudo mkdir -p /mnt/priv-app/Settings && sudo chmod -R 777 /mnt && 7z x system_ext.img -o/mnt -y && sudo cp /mnt/priv-app/Settings/Settings.apk . && echo "method 1 used" || (./tools/extract.erofs -i system_ext.img -x -o . && cp system_ext/priv-app/Settings/Settings.apk . && echo "method 2 used" || (echo "both methods failed" && exit 1))
-          7z a "${NAME}.zip" Settings.apk
+          7z a "${NAME}" Settings.apk
 
       - name: Upload
         run: |
