@@ -36,7 +36,7 @@ async function handleRequest(request) {
 
   try {
     await checkUrlAccessibility(finalUrl);
-    return new Response(`The new URL is available: ${finalUrl}`, { status: 200 });
+    return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch (error) {
     const data = { ref: "main", inputs: { get, url } };
 
@@ -53,7 +53,7 @@ async function handleRequest(request) {
       });
 
       if (githubResponse.ok) {
-        return new Response("Request successfully sent to GitHub Actions!", { status: 200 });
+        return new Response("\nresult: success\nlink will be available at: ${finalUrl}\n", { status: 200 });
       } else {
         const errorText = await githubResponse.text();
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
