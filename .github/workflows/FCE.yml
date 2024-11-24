@@ -103,8 +103,8 @@ jobs:
 
       - name: Upload
         run: |
-          gh release upload "$GET" "${NAME}.zip" --clobber
-          FILE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GET}/${NAME}.zip"
+          gh release upload "$GET" "${NAME}" --clobber
+          FILE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GET}/${NAME}"
           echo -e "___\n[$NAME]($FILE_URL)" >> "$GET.md"
           git add "$GET.md"
           git commit -m "Add ${NAME}"
