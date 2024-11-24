@@ -10,7 +10,7 @@ async function handleRequest(request) {
   const parts = requestBody.split(" ");
 
   if (parts.length < 2) {
-    return new Response("\nMissing parameters. \n\nUsage: \ncurl -d \"<get> <url>\" <worker-url>\n\nExample: curl -d \"boot_img https://example.com/file.zip\" fce.offici5l.workers.dev\n\n", { status: 400 });
+    return new Response("\nMissing parameters. \n\nUsage:\n curl -d \"<get> <url>\" <worker-url>\n\nExample:\n curl -d \"boot_img https://example.com/file.zip\" fce.offici5l.workers.dev\n\n", { status: 400 });
   }
 
   const get = parts[0];
