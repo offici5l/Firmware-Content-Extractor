@@ -10,7 +10,7 @@ async function handleRequest(request) {
   const parts = requestBody.split(" ");
 
   if (parts.length < 2) {
-    return new Response("\nMissing parameters\n", { status: 400 });
+    return new Response("\nMissing parameters. Usage: \ncurl -d \"<get> <url>\" <worker-url>\nExample: curl -d \"boot_img https://example.com/file.zip\" fce.offici5l.workers.dev\n", { status: 400 });
   }
 
   const get = parts[0];
