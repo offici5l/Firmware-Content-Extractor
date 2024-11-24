@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Version ${{ github.event.inputs.deploy_version }} 
+    name: ${{ github.event.inputs.deploy_version }} 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
