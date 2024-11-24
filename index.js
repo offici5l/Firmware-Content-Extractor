@@ -1,16 +1,20 @@
 async function handleRequest(request) {
   const { url, get } = await request.json();
 
-  if (!url || !get) {
-    return new Response("Missing URL or 'get' parameter", { status: 400 });
+  if (!url) {
+    return new Response("Missing URL parameter", { status: 400 });
+  }
+
+  if (!get) {
+    return new Response("Missing 'get' parameter", { status: 400 });
   }
 
   if (get !== "boot_img" && get !== "settings_apk") {
-    return new Response("Only 'boot_img' and 'settings_apk' are allowed for 'get' parameter", { status: 400 });
+    return new Response("Invalid 'get' parameter. Only 'boot_img' and 'settings_apk' are allowed.", { status: 400 });
   }
 
   if (!url.endsWith(".zip")) {
-    return new Response("The provided URL is not supported. Only .zip files are allowed.", { status: 400 });
+    return new Response("Invalid URL. Only .zip files are supported.", { status: 400 });
   }
 
   try {
@@ -19,26 +23,27 @@ async function handleRequest(request) {
       return new Response("The provided URL is not accessible.", { status: 400 });
     }
   } catch (error) {
-    console.error("Error while checking the URL:", error);
-    return new Response(`An error occurred while checking the URL accessibility: ${error.message}`, { status: 500 });
+    return new Response("Error while checking URL accessibility.", { status: 500 });
   }
 
-  const data = {
-    ref: "main", 
-    inputs: {
-      get: get,
-      url: url
-    }
-  };
-
-  const githubActionsUrl = GITHUB_ACTIONS_URL;
-  const githubToken = GITHUB_TOKEN;
+  const fileName = url.split('/').pop();
+  const combinedBasename = `${get}_${fileName}`;
+  const finalUrl = `https://github.com/offici5l/Firmware-Content-Extractor/releases/download/${get}/${combinedBasename}`;
 
   try {
-    const githubResponse = await fetch(githubActionsUrl, {
+    const newUrlResponse = await fetch(finalUrl, { method: "HEAD" });
+    if (newUrlResponse.ok) {
+      return new Response(`The new URL is available: ${finalUrl}`, { status: 200 });
+    }
+  } catch {}
+
+  const data = { ref: "main", inputs: { get, url } };
+
+  try {
+    const githubResponse = await fetch(GITHUB_ACTIONS_URL, {
       method: "POST",
       headers: {
-        "Authorization": `token ${githubToken}`,
+        "Authorization": `token ${GITHUB_TOKEN}`,
         "Accept": "application/vnd.github.v3+json",
         "Content-Type": "application/json",
         "User-Agent": "Cloudflare Worker"
@@ -50,15 +55,11 @@ async function handleRequest(request) {
       return new Response("Request successfully sent to GitHub Actions!", { status: 200 });
     } else {
       const errorText = await githubResponse.text();
-      console.error("GitHub API error:", errorText);
-      return new Response(`An error occurred while sending the request to GitHub: ${errorText}`, { status: 500 });
+      return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
     }
   } catch (error) {
-    console.error("Error while sending request to GitHub Actions:", error);
-    return new Response(`An error occurred while sending the request to GitHub: ${error.message}`, { status: 500 });
+    return new Response("Error while sending request to GitHub Actions.", { status: 500 });
   }
 }
 
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
+addEventListener('fetch', event => event.respondWith(handleRequest(event.request)));
