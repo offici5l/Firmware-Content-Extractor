@@ -1,27 +1,27 @@
 async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
   if (!response.ok) {
-    throw new Error('url is not accessible');
+    throw new Error('URL is not accessible');
   }
 }
 
 async function handleRequest(request) {
-  const { url, get } = await request.json();
+  const requestBody = await request.text();
+  const parts = requestBody.split(" ");
 
-  if (!url) {
-    return new Response("\nMissing 'url' parameter\n", { status: 400 });
+  if (parts.length < 2) {
+    return new Response("\nMissing parameters\n", { status: 400 });
   }
 
-  if (!get) {
-    return new Response("\nMissing 'get' parameter\n", { status: 400 });
-  }
+  const get = parts[0];
+  const url = parts[1];
 
   if (get !== "boot_img" && get !== "settings_apk") {
     return new Response("\nOnly 'boot_img' and 'settings_apk' are allowed.\n", { status: 400 });
   }
 
   if (!url.endsWith(".zip")) {
-    return new Response("\nOnly .zip url are supported.\n", { status: 400 });
+    return new Response("\nOnly .zip URLs are supported.\n", { status: 400 });
   }
 
   try {
@@ -53,7 +53,7 @@ async function handleRequest(request) {
       });
 
       if (githubResponse.ok) {
-        return new Response("\nresult: success\nlink will be available at: ${finalUrl}\n", { status: 200 });
+        return new Response(`\nresult: success\nlink will be available at: ${finalUrl}\n`, { status: 200 });
       } else {
         const errorText = await githubResponse.text();
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
