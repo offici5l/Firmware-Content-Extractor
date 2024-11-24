@@ -1,19 +1,25 @@
-name: Conditional Steps Workflow
+name: Dynamic Job Example
 
 on:
   workflow_dispatch:
     inputs:
-      step_name:
-        description: 'Enter step name'
+      job_name:
+        description: 'Enter the job name'
         required: true
-        default: 'DefaultStep'
+        default: 'build'
+      environment:
+        description: 'Choose environment'
+        required: true
+        default: 'production'
 
 jobs:
-  FCE:
+  dynamic-job:
     runs-on: ubuntu-latest
+    name: ${{ github.event.inputs.job_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: ${{ github.event.inputs.step_name }}
-        run: echo "This is the custom step named: ${{ github.event.inputs.step_name }}"
+
+      - name: Run setup for ${{ github.event.inputs.environment }}
+        run: |
+          echo "Setting up for ${{ github.event.inputs.environment }}"
