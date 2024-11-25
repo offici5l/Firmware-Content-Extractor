@@ -21,27 +21,23 @@ jobs:
     name: ${{ github.event.inputs.Track }} 
     steps:
 
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
-      - name: Validate
+      - name: validate
         run: |
           [[ "$GET" == "settings_apk" || "$GET" == "boot_img" ]] || { echo "Only 'settings_apk' or 'boot_img' are allowed."; exit 1; }
           curl --head --fail "$URL" && [[ "$URL" == *.zip ]] || { echo "Invalid or inaccessible URL."; exit 1; }
-
           NAME=${GET}_$(basename "$URL")
-
           if [ -f "$GET.md" ]; then
             if grep -q "${NAME}" "$GET.md"; then
               echo "${NAME} existing"
               exit 1
             fi
           fi
-
           echo "NAME=$NAME" >> $GITHUB_ENV
 
-
-      - name: Config
+      - name: config
         run: |
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
           git config --local user.name "${{ github.actor }}"
@@ -59,7 +55,7 @@ jobs:
             git push
           fi
 
-      - name: Cache
+      - name: cache
         id: cache
         uses: actions/cache@v4
         with:
@@ -70,7 +66,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache-
 
-      - name: Install
+      - name: install
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           if [ ! -d tools ]; then
@@ -82,13 +78,13 @@ jobs:
             rm -f erofs-utils.zip
           fi
 
-      - name: Download
+      - name: download
         run: |
           aria2c -x 7 -s 7 -k 1M --continue --max-tries=0 --log=LOG --out='exrom.zip' "$URL"
           7z x exrom.zip -o./
           rm exrom.zip
 
-      - name: GET boot_img
+      - name: boot_img
         if: ${{ env.GET == 'boot_img' }}
         run: |
           if [ ! -f "boot.img" ]; then
@@ -96,14 +92,14 @@ jobs:
           fi
           7z a "${NAME}" boot.img
 
-      - name: GET settings_apk
+      - name: settings_apk
         if: ${{ env.GET == 'settings_apk' }}
         run: |
           ./tools/payload_dumper.py --out . --images system_ext payload.bin
           sudo mkdir -p /mnt/priv-app/Settings && sudo chmod -R 777 /mnt && 7z x system_ext.img -o/mnt -y && sudo cp /mnt/priv-app/Settings/Settings.apk . && echo "method 1 used" || (./tools/extract.erofs -i system_ext.img -x -o . && cp system_ext/priv-app/Settings/Settings.apk . && echo "method 2 used" || (echo "both methods failed" && exit 1))
           7z a "${NAME}" Settings.apk
 
-      - name: Upload
+      - name: upload
         run: |
           gh release upload "$GET" "${NAME}" --clobber
           FILE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GET}/${NAME}"
