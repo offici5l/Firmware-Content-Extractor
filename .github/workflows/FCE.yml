@@ -8,7 +8,7 @@ on:
       url:
         required: true
       track:
-        required: false
+        required: true
 
 env:
   GET: ${{ github.event.inputs.get }}
