@@ -1,6 +1,4 @@
 name = "fce"
 compatibility_date = "2024-11-23"
 main = "index.js"
-
-[compatibility_flags]
-nodejs_compat = true
+compatibility_flags = ["nodejs_compat"]
