@@ -1,5 +1,6 @@
 const GITHUB_TOKEN = globalThis.GITHUB_TOKEN;
-const GITHUB_ACTIONS_URL = globalThis.GITHUB_ACTIONS_URL;
+const GITHUB_ACTIONS_URL = "https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml";
+
 
 const track = new Date().toISOString().replace(/[^\w]/g, '') + new Date().getSeconds() + Math.floor(Math.random() * 10000) + Date.now();
 
