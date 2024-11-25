@@ -107,10 +107,10 @@ async function handleRequest(request) {
           }
         })();
       } else {
-        const errorText = await githubResponse.text();
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
       }
     } catch (error) {
+      console.error("Error during GitHub API request:", error);
       return new Response("Error while sending request to GitHub Actions.1", { status: 500 });
     }
   }
