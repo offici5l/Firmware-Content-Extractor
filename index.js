@@ -40,6 +40,7 @@ async function handleRequest(request) {
     await checkUrlAccessibility(finalUrl);
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch (error) {
+    const GITHUB_ACTIONS_URL = env.GITHUB_ACTIONS_URL;
     const data = { ref: "main", inputs: { get, url, track } };
     console.log("data");
     console.log(data);
