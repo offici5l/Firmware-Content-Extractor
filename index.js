@@ -40,7 +40,7 @@ async function handleRequest(request) {
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch (error) {
     const data = { ref: "main", inputs: { get, url, track } };
-    console.log("Error while sending request to GitHub Actions. data:", data);
+    Response("data:", data);
 
     try {
       const githubResponse = await fetch(`${GITHUB_ACTIONS_URL}/dispatches`, {
@@ -112,8 +112,8 @@ async function handleRequest(request) {
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
       }
     } catch (error) {
-      console.log("Error while sending request to GitHub Actions:", error);
-      return new Response("Error while sending request to GitHub Actions.", { status: 500 });
+      console.log("Error:", error);
+      return new Response("Error while sending request to GitHub Actions.1", { status: 500 });
     }
   }
 }
