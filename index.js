@@ -34,6 +34,7 @@ async function handleRequest(request) {
 
   const fileName = url.split('/').pop();
   const combinedBasename = `${get}_${fileName}`;
+  console.log("testt");
   const finalUrl = `https://github.com/offici5l/Firmware-Content-Extractor/releases/download/${get}/${combinedBasename}`;
 
   try {
@@ -109,11 +110,10 @@ async function handleRequest(request) {
           }
         })();
       } else {
-        return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
+        return new Response(`Error from GitHub2`);
       }
     } catch (error) {
-      const errorText = await githubResponse.text();
-      return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
+      return new Response(`Error from GitHub1`);
     }
   }
 }
