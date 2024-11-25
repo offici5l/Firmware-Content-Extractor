@@ -15,6 +15,7 @@ async function handleRequest(request) {
 
   const get = parts[0];
   const url = parts[1];
+  const track = require('crypto').createHash('sha256').update(`${new Date().toISOString()}-${new Date().getSeconds()}-${url}`).digest('hex').slice(0, 16);
 
   if (get !== "boot_img" && get !== "settings_apk") {
     return new Response("\nOnly 'boot_img' and 'settings_apk' are allowed.\n", { status: 400 });
@@ -38,7 +39,7 @@ async function handleRequest(request) {
     await checkUrlAccessibility(finalUrl);
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch (error) {
-    const data = { ref: "main", inputs: { get, url } };
+    const data = { ref: "main", inputs: { get, url, track } };
 
     try {
       const githubResponse = await fetch(GITHUB_ACTIONS_URL, {
