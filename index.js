@@ -1,7 +1,7 @@
 
 const GITHUB_ACTIONS_URL = "https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml";
 const ONE_URL = `${GITHUB_ACTIONS_URL}/dispatches`;
-
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const track = new Date().toISOString().replace(/[^\w]/g, '') + new Date().getSeconds() + Math.floor(Math.random() * 10000) + Date.now();
 
 async function checkUrlAccessibility(url) {
