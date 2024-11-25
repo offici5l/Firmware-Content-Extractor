@@ -38,8 +38,8 @@ async function handleRequest(request) {
   const fileName = url.split('/').pop();
   const combinedBasename = `${get}_${fileName}`;
   const finalUrl = `https://github.com/offici5l/Firmware-Content-Extractor/releases/download/${get}/${combinedBasename}`;
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  console.log("GITHUB Token: ", GITHUB_TOKEN);
+  const token = GITHUB_TOKEN;
+  console.log("GITHUB Token: ", token);
   try {
     await checkUrlAccessibility(finalUrl);
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
@@ -49,7 +49,7 @@ async function handleRequest(request) {
       const githubResponse = await fetch(ONE_URL, {
         method: "POST",
         headers: {
-          "Authorization": `token ${GITHUB_TOKEN}`,
+          "Authorization": `token ${token}`,
           "Accept": "application/vnd.github.v3+json",
           "Content-Type": "application/json",
           "User-Agent": "Cloudflare Worker"
@@ -62,7 +62,7 @@ async function handleRequest(request) {
         console.log("test1");
         const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
         const headers = {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/vnd.github+json",
         };
         console.log("test2");
