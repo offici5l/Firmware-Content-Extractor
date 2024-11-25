@@ -40,7 +40,7 @@ async function handleRequest(request) {
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch (error) {
     const data = { ref: "main", inputs: { get, url, track } };
-    console.log(data);
+    console.log("Error while sending request to GitHub Actions. data:", data);
 
     try {
       const githubResponse = await fetch(`${GITHUB_ACTIONS_URL}/dispatches`, {
