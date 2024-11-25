@@ -63,6 +63,7 @@ async function handleRequest(request) {
         async function fetchIDs() {
           while (true) {
             try {
+              console.log("Fetching runs from GitHub...");
               const response = await fetch(RUNS_URL, { headers });
               const responseBody = await response.json();
               if (responseBody && responseBody.workflow_runs) {
@@ -91,11 +92,11 @@ async function handleRequest(request) {
         (async () => {
           const result = await fetchIDs();
           for (const step of result.steps) {
-            process.stdout.write(`step: ${step.name} ==> status: ${step.status}... `);
+            console.log(`Checking step: ${step.name} ==> status: ${step.status}`);
             while (step.status !== "completed") {
               await new Promise(resolve => setTimeout(resolve, 3000));
             }
-            process.stdout.write(`\rstep: ${step.name} ==> conclusion: ${step.conclusion}\n`);
+            console.log(`Step: ${step.name} ==> conclusion: ${step.conclusion}`);
             if (step.name === "upload") {
               if (step.conclusion === "success") {
                 console.log(`\nlink: ${finalUrl}\n`);
@@ -106,9 +107,11 @@ async function handleRequest(request) {
         })();
       } else {
         const errorText = await githubResponse.text();
+        console.log(`Error from GitHub: ${errorText}`);
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
       }
     } catch (error) {
+      console.log("Error while sending request to GitHub Actions:", error);
       return new Response("Error while sending request to GitHub Actions.", { status: 500 });
     }
   }
