@@ -2,13 +2,12 @@ const GITHUB_TOKEN = globalThis.GITHUB_TOKEN;
 const GITHUB_ACTIONS_URL = globalThis.GITHUB_ACTIONS_URL;
 const track = new Date().toISOString().replace(/[^\w]/g, '') + new Date().getSeconds() + Math.floor(Math.random() * 10000) + Date.now();
 
-
-async function checkUrlAccessibility(url) {
+  async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
-  if (!response.ok) {
-    throw new Error('URL is not accessible');
+    if (!response.ok) {
+      throw new Error('URL is not accessible');
+    }
   }
-}
 
   if (parts.length < 2) {
     return new Response("\nMissing parameters!\n\nUsage: \ncurl -d \"<get> <url>\" <worker-url>\n\nExample:\n curl -d \"boot_img https://example.com/file.zip\" fce.offici5l.workers.dev\n\n", { status: 400 });
