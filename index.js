@@ -1,3 +1,5 @@
+import { createHash } from "crypto";
+
 async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
   if (!response.ok) {
@@ -15,7 +17,7 @@ async function handleRequest(request) {
 
   const get = parts[0];
   const url = parts[1];
-  const track = require('crypto').createHash('sha256').update(`${new Date().toISOString()}-${new Date().getSeconds()}-${url}`).digest('hex').slice(0, 16);
+  const track = createHash('sha256').update(`${new Date().toISOString()}-${new Date().getSeconds()}-${url}`).digest('hex').slice(0, 16);
 
   if (get !== "boot_img" && get !== "settings_apk") {
     return new Response("\nOnly 'boot_img' and 'settings_apk' are allowed.\n", { status: 400 });
@@ -54,11 +56,7 @@ async function handleRequest(request) {
       });
 
       if (githubResponse.ok) {
-        const axios = require("axios");
-
-        const BASE_URL = GITHUB_ACTIONS_URL.split('/workflows')[0];
         const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
-
         const headers = {
           Authorization: `Bearer ${GITHUB_TOKEN}`,
           Accept: "application/vnd.github+json",
@@ -67,23 +65,21 @@ async function handleRequest(request) {
         async function fetchIDs() {
           while (true) {
             try {
-              const response = await axios.get(RUNS_URL, { headers });
-              if (response.data && response.data.workflow_runs) {
-                const ids = response.data.workflow_runs.map(run => run.id);
+              const response = await fetch(RUNS_URL, { headers });
+              const responseBody = await response.json();
+              if (responseBody && responseBody.workflow_runs) {
+                const ids = responseBody.workflow_runs.map(run => run.id);
                 for (const id of ids) {
                   const JOBS_URL = `${RUNS_URL}/runs/${id}/jobs`;
-                  try {
-                    const jobsResponse = await axios.get(JOBS_URL, { headers });
-                    const jobName = jobsResponse.data.jobs[0].name;
-                    
-                    if (jobName === track) {
-                      const steps = jobsResponse.data.jobs[0].steps;
-                      if (steps.length > 0) {
-                        return { steps, JOBS_URL }; 
-                      }
+                  const jobsResponse = await fetch(JOBS_URL, { headers });
+                  const jobsResponseBody = await jobsResponse.json();
+                  const jobName = jobsResponseBody.jobs[0].name;
+
+                  if (jobName === track) {
+                    const steps = jobsResponseBody.jobs[0].steps;
+                    if (steps.length > 0) {
+                      return { steps, JOBS_URL }; 
                     }
-                  } catch (error) {
-                    console.error("Error fetching job details: ", error);
                   }
                 }
               }
