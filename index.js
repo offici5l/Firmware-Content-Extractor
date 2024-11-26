@@ -49,7 +49,7 @@ async function handleRequest(request) {
       const githubResponse = await fetch(ONE_URL, {
         method: "POST",
         headers: {
-          "Authorization": `token ${GTK}`,
+          "Authorization": `token ${GTKK}`,
           "Accept": "application/vnd.github.v3+json",
           "Content-Type": "application/json",
           "User-Agent": "Cloudflare Worker"
@@ -62,7 +62,7 @@ async function handleRequest(request) {
         console.log("test1");
         const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
         const headers = {
-          Authorization: `Bearer ${GTK}`,
+          Authorization: `Bearer ${GTKK}`,
           Accept: "application/vnd.github+json",
         };
         console.log("test2");
