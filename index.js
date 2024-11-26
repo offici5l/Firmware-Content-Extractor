@@ -38,7 +38,7 @@ async function handleRequest(request) {
     await checkUrlAccessibility(finalUrl);
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
   } catch {
-    const data = { ref: "main", inputs: { get, url } };
+    const data = { ref: "main", inputs: { get, url, track } };
 
     try {
       const githubResponse = await fetch(ONE_URL, {
