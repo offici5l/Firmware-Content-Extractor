@@ -5,8 +5,8 @@ addEventListener("fetch", event => {
 async function handleRequest(request) {
   if (request.method === "POST") {
     try {
-      const requestBody = await request.text();
-      const anam = requestBody.trim();
+      const requestBody = await request.json();
+      const anam = requestBody.anam;
 
       if (!anam) {
         return new Response("Missing 'anam' parameter", { status: 400 });
