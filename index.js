@@ -1,8 +1,3 @@
-addEventListener("fetch", event => {
-  const token = GTK;
-  event.respondWith(new Response(`Token is: ${token}`, { status: 200 }));
-});
-
 async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
   if (!response.ok) {
@@ -49,7 +44,7 @@ async function handleRequest(request) {
       const githubResponse = await fetch(ONE_URL, {
         method: "POST",
         headers: {
-          "Authorization": `token ${token}`,
+          "Authorization": `token ${GTK}`,
           "Accept": "application/vnd.github.v3+json",
           "Content-Type": "application/json",
           "User-Agent": "Cloudflare Worker"
@@ -64,7 +59,7 @@ async function handleRequest(request) {
 
       async function fetchIDs() {
         const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
-        const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
+        const headers = { Authorization: `Bearer ${GTK}`, Accept: "application/vnd.github+json" };
         while (true) {
           try {
             const response = await fetch(RUNS_URL, { headers });
