@@ -32,30 +32,29 @@ export default {
       if (finalUrlResponse.ok) {
         return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
       } 
+      
       const track = Date.now();
       const data = { ref: "main", inputs: { get, url, track } };
-      
-      try {
-        const githubResponse = await fetch("https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/dispatches", {
-          method: "POST",
-          headers: {
-            "Authorization": `token ${env.GTKK}`,
-            "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json",
-            "User-Agent": "Cloudflare Worker"
-          },
-          body: JSON.stringify(data)
-        });
 
-        if (githubResponse.ok) {
-          return new Response(`\nresult: It will be available\nlink: ${finalUrl}\n`, { status: 200 });
-        } else {
-          const githubResponseText = await githubResponse.text();
-          return new Response(`GitHub Response Error: ${githubResponseText}`, { status: 500 });
-        }
-      } catch (error) {
-        return new Response(`Error communicating with GitHub: ${error.message}`, { status: 500 });
+      const githubResponse = await fetch("https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/dispatches", {
+        method: "POST",
+        headers: {
+          "Authorization": `token ${env.GTKK}`,
+          "Accept": "application/vnd.github.v3+json",
+          "Content-Type": "application/json",
+          "User-Agent": "Cloudflare Worker"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (githubResponse.ok) {
+        return new Response(`\nresult: It will be available\nlink: ${finalUrl}\n`, { status: 200 });
+      } else {
+        const githubResponseText = await githubResponse.text();
+        return new Response(`GitHub Response Error: ${githubResponseText}`, { status: 500 });
       }
+    } catch (error) {
+      return new Response(`Error: ${error.message}`, { status: 500 });
     }
   }
 };
