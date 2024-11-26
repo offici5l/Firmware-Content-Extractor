@@ -33,7 +33,7 @@ export default {
         return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
       } 
       
-      const track = Date.now();
+      const track = Date.now().toString();
       const data = { ref: "main", inputs: { get, url, track } };
 
       const githubResponse = await fetch("https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/dispatches", {
