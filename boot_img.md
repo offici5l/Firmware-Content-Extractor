@@ -15,3 +15,5 @@ ___
 [boot_img_miui_MUNCHGlobal_OS1.0.1.0.ULMMIXM_fcd5899d29_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_miui_MUNCHGlobal_OS1.0.1.0.ULMMIXM_fcd5899d29_14.0.zip)
 ___
 [boot_img_miui_MUNCHEEAGlobal_OS1.0.1.0.ULMEUXM_0f15673ab7_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_miui_MUNCHEEAGlobal_OS1.0.1.0.ULMEUXM_0f15673ab7_14.0.zip)
+___
+[boot_img_miui_MUNCHIDGlobal_OS1.0.4.0.ULMIDXM_43f216074a_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_miui_MUNCHIDGlobal_OS1.0.4.0.ULMIDXM_43f216074a_14.0.zip)
