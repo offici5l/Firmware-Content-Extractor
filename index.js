@@ -1,4 +1,8 @@
-const token = process.env.token;
+addEventListener("fetch", event => {
+  const token = env.token;
+  event.respondWith(new Response(`Token is: ${token}`, { status: 200 }));
+});
+
 async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
   if (!response.ok) {
