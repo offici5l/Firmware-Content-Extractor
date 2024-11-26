@@ -13,21 +13,26 @@ async function checkUrlAccessibility(url) {
 async function fetchIDs(RUNS_URL, headers) {
   while (true) {
     const response = await fetch(RUNS_URL, { headers });
-    const responseBody = await response.json();
-    if (responseBody && responseBody.workflow_runs) {
-      const ids = responseBody.workflow_runs.map(run => run.id);
-      for (const id of ids) {
-        const JOBS_URL = `${RUNS_URL}/runs/${id}/jobs`;
-        const jobsResponse = await fetch(JOBS_URL, { headers });
-        const jobsResponseBody = await jobsResponse.json();
-        const jobName = jobsResponseBody.jobs[0].name;
-        if (jobName === track) {
-          const steps = jobsResponseBody.jobs[0].steps;
-          if (steps.length > 0) {
-            return { steps, JOBS_URL };
+    const textResponse = await response.text();
+    try {
+      const responseBody = JSON.parse(textResponse);
+      if (responseBody && responseBody.workflow_runs) {
+        const ids = responseBody.workflow_runs.map(run => run.id);
+        for (const id of ids) {
+          const JOBS_URL = `${RUNS_URL}/runs/${id}/jobs`;
+          const jobsResponse = await fetch(JOBS_URL, { headers });
+          const jobsResponseBody = await jobsResponse.json();
+          const jobName = jobsResponseBody.jobs[0].name;
+          if (jobName === track) {
+            const steps = jobsResponseBody.jobs[0].steps;
+            if (steps.length > 0) {
+              return { steps, JOBS_URL };
+            }
           }
         }
       }
+    } catch (error) {
+      console.error("Error parsing JSON response:", error, textResponse);
     }
     await new Promise(resolve => setTimeout(resolve, 3000));
   }
