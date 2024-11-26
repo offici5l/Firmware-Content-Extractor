@@ -1,19 +1,16 @@
-name: Deploy Workflow
+name: Deployaname
 
 on:
   workflow_dispatch:
-    inputs:
-      deploy_version:
-        description: 'Version to deploy'
-        required: false
 
 jobs:
-  build:
+  deployaname:
     runs-on: ubuntu-latest
-    name: ${{ github.event.inputs.deploy_version }} 
+    name: Deploy
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Deploy application
-        run: |
-          echo "Deploying version ${{ github.event.inputs.deploy_version }}"
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: t
