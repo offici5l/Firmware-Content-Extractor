@@ -3,9 +3,6 @@ name: cloudflare
 on:
   workflow_dispatch:
 
-env:
-  token: ${{ secrets.GTOKEN_ACTION }}
-
 jobs:
   cloudflare:
     runs-on: ubuntu-latest
@@ -20,6 +17,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy
           secrets: |
-            token
+            GTK
         env:
-          token: ${{ secrets.GTOKEN_ACTION }}
+          GTK: ${{ secrets.GTOKEN_ACTION }}
