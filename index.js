@@ -1,3 +1,4 @@
+const token = process.env.token;
 async function checkUrlAccessibility(url) {
   const response = await fetch(url, { method: 'HEAD' });
   if (!response.ok) {
