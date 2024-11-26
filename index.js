@@ -1,7 +1,5 @@
 export default {
   async fetch(req, env) {
-    console.log("test");
-
     const requestBody = await req.text();
     const parts = requestBody.split(" ");
 
