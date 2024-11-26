@@ -13,6 +13,11 @@ async function checkUrlAccessibility(url) {
 async function fetchIDs(RUNS_URL, headers) {
   while (true) {
     const response = await fetch(RUNS_URL, { headers });
+    if (!response.ok) {
+      console.error("Request failed with status:", response.status);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      continue;
+    }
     const textResponse = await response.text();
     try {
       const responseBody = JSON.parse(textResponse);
@@ -21,6 +26,10 @@ async function fetchIDs(RUNS_URL, headers) {
         for (const id of ids) {
           const JOBS_URL = `${RUNS_URL}/runs/${id}/jobs`;
           const jobsResponse = await fetch(JOBS_URL, { headers });
+          if (!jobsResponse.ok) {
+            console.error("Failed to fetch jobs with status:", jobsResponse.status);
+            continue;
+          }
           const jobsResponseBody = await jobsResponse.json();
           const jobName = jobsResponseBody.jobs[0].name;
           if (jobName === track) {
