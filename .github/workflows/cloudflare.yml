@@ -20,6 +20,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy
           secrets: |
-            GTK
+            GTKK
         env:
-          GTK: ${{ secrets.GTOKEN_ACTION }}
+          GTKK: ${{ secrets.GTKK }}
