@@ -52,7 +52,7 @@ async function handleRequest(request) {
         body: JSON.stringify(data)
       });
 
-      if (!githubResponse.ok) {
+      if (githubResponse.ok) {
         const errorText = await githubResponse.text();
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
       }
