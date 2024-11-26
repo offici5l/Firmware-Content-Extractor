@@ -7,16 +7,13 @@ async function checkUrlAccessibility(url) {
 
 async function handleRequest(request) {
   const requestBody = await request.text();
-  const parts = requestBody.split(" ");
+  const [get, url] = requestBody.split(" ");
 
-  if (parts.length < 2) {
+  if (!get || !url) {
     return new Response("\nMissing parameters!\n\nUsage: \ncurl -d \"<get> <url>\" <worker-url>\n\nExample:\n curl -d \"boot_img https://example.com/file.zip\" fce.offici5l.workers.dev\n\n", { status: 400 });
   }
 
-  const get = parts[0];
-  const url = parts[1];
-
-  if (get !== "boot_img" && get !== "settings_apk") {
+  if (!["boot_img", "settings_apk"].includes(get)) {
     return new Response("\nOnly 'boot_img' and 'settings_apk' are allowed.\n", { status: 400 });
   }
 
@@ -26,7 +23,7 @@ async function handleRequest(request) {
 
   try {
     await checkUrlAccessibility(url);
-  } catch (error) {
+  } catch {
     return new Response("\nThe provided URL is not accessible.\n", { status: 400 });
   }
 
@@ -35,13 +32,14 @@ async function handleRequest(request) {
   const finalUrl = `https://github.com/offici5l/Firmware-Content-Extractor/releases/download/${get}/${combinedBasename}`;
   const GITHUB_ACTIONS_URL = "https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml";
   const ONE_URL = `${GITHUB_ACTIONS_URL}/dispatches`;
-  const track = new Date().toISOString().replace(/[^\w]/g, '') + new Date().getSeconds() + Math.floor(Math.random() * 10000) + Date.now();
+  const track = new Date().toISOString().replace(/[^\w]/g, '') + Date.now();
 
   try {
     await checkUrlAccessibility(finalUrl);
     return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
-  } catch (error) {
+  } catch {
     const data = { ref: "main", inputs: { get, url } };
+
     try {
       const githubResponse = await fetch(ONE_URL, {
         method: "POST",
@@ -54,63 +52,47 @@ async function handleRequest(request) {
         body: JSON.stringify(data)
       });
 
-      
-      if (githubResponse.ok) {
-        console.log("test1");
-        const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-        };
-        console.log("test2");
-        async function fetchIDs() {
-          while (true) {
-            try {
-              console.log("Fetching runs from GitHub...");
-              const response = await fetch(RUNS_URL, { headers });
-              const responseBody = await response.json();
-              if (responseBody && responseBody.workflow_runs) {
-                const ids = responseBody.workflow_runs.map(run => run.id);
-                for (const id of ids) {
-                  const JOBS_URL = `${RUNS_URL}/runs/${id}/jobs`;
-                  const jobsResponse = await fetch(JOBS_URL, { headers });
-                  const jobsResponseBody = await jobsResponse.json();
-                  const jobName = jobsResponseBody.jobs[0].name;
-
-                  if (jobName === track) {
-                    const steps = jobsResponseBody.jobs[0].steps;
-                    if (steps.length > 0) {
-                      return { steps, JOBS_URL }; 
-                    }
-                  }
-                }
-              }
-            } catch (error) {
-              console.error("Error fetching data: ", error);
-            }
-            await new Promise(resolve => setTimeout(resolve, 3000)); 
-          }
-        }
-
-        (async () => {
-          const result = await fetchIDs();
-          for (const step of result.steps) {
-            console.log(`Checking step: ${step.name} ==> status: ${step.status}`);
-            while (step.status !== "completed") {
-              await new Promise(resolve => setTimeout(resolve, 3000));
-            }
-            console.log(`Step: ${step.name} ==> conclusion: ${step.conclusion}`);
-            if (step.name === "upload") {
-              if (step.conclusion === "success") {
-                console.log(`\nlink: ${finalUrl}\n`);
-                return;
-              }
-            }
-          }
-        })();
-      } else {
+      if (!githubResponse.ok) {
         const errorText = await githubResponse.text();
         return new Response(`Error from GitHub: ${errorText}`, { status: 500 });
+      }
+
+      async function fetchIDs() {
+        const RUNS_URL = `${GITHUB_ACTIONS_URL}/runs`;
+        const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
+        while (true) {
+          try {
+            const response = await fetch(RUNS_URL, { headers });
+            const responseBody = await response.json();
+            if (responseBody?.workflow_runs) {
+              for (const run of responseBody.workflow_runs) {
+                const JOBS_URL = `${RUNS_URL}/runs/${run.id}/jobs`;
+                const jobsResponse = await fetch(JOBS_URL, { headers });
+                const jobsResponseBody = await jobsResponse.json();
+                const jobName = jobsResponseBody.jobs[0].name;
+
+                if (jobName === track) {
+                  const steps = jobsResponseBody.jobs[0].steps;
+                  if (steps.length > 0) return { steps, JOBS_URL };
+                }
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching data: ", error);
+          }
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+      }
+
+      const result = await fetchIDs();
+      for (const step of result.steps) {
+        while (step.status !== "completed") {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+        if (step.name === "upload" && step.conclusion === "success") {
+          console.log(`\nlink: ${finalUrl}\n`);
+          return;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -124,6 +106,3 @@ export default {
     return handleRequest(req);
   }
 };
-
-
-        
