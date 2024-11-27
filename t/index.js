@@ -48,12 +48,7 @@ export default {
         const jobData = await jobResponse.json();
         const job = jobData.jobs.find(job => job.name === JOB_NAME);
         if (job) {
-          const stepsText = job.steps
-            .filter(step => ["validate", "download", "boot_img", "settings_apk", "upload"].includes(step.name))
-            .map(step => 
-    `Name: ${step.name}\nStatus: ${step.status}\nConclusion: ${step.conclusion}\n`
-  ).join('\n');
-          return new Response(stepsText, { status: 200, headers: { 'Content-Type': 'text/plain' } });
+          return new Response(job.steps.filter(step => ["validate", "download", "boot_img", "settings_apk", "upload"].includes(step.name)).map(step => `Name: ${step.name}\nStatus: ${step.status}\nConclusion: ${step.conclusion}\n`).join('\n'), { status: 200, headers: { 'Content-Type': 'text/plain' } });
           const jobConclusion = job.conclusion || "In progress...";
           return new Response(jobConclusion, { status: 200 });
         }
