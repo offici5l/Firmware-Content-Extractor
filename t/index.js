@@ -1,58 +1,59 @@
 export default {
   async fetch(req, env) {
+    const requestBody = await req.text();
+    const JOB_NAME = requestBody.trim();
+
+    const ACCEPT_HEADER = "application/vnd.github.v3+json";
+    const AUTH_HEADER = `token ${env.GTKK}`;
+    const BASE_URL = "https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/runs";
+
     try {
-      const requestBody = await req.text();
-      const TOKEN = env.GTKK;
-      const JOB_NAME = requestBody;
-
-      const BASE_URL = 'https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/runs';
-      const ACCEPT_HEADER = 'application/vnd.github+json';
-      const AUTH_HEADER = `token ${TOKEN}`;
-
-      const runsResponse = await fetch(BASE_URL, {
+      const response = await fetch(BASE_URL, {
+        method: "GET",
         headers: {
-          'Accept': ACCEPT_HEADER,
-          'Authorization': AUTH_HEADER
+          "Authorization": AUTH_HEADER,
+          "Accept": ACCEPT_HEADER,
+          "User-Agent": "Cloudflare Worker"
         }
       });
 
-      if (!runsResponse.ok) {
-        const errorResponse = await runsResponse.text();
-        return new Response(`Error: Unable to fetch workflow runs. Status: ${runsResponse.status}`, { status: 500 });
+      if (!response.ok) {
+        return new Response("Unable to fetch workflow runs", { status: 403 });
       }
 
-      const runsData = await runsResponse.json();
-      const jobUrls = runsData.workflow_runs.map(run => `${run.url}/jobs`);
+      const data = await response.json();
+      const jobUrl = data.workflow_runs
+        .map(run => run.url + "/jobs")
+        .find(url => url.includes(JOB_NAME));
 
-      for (let jobUrl of jobUrls) {
-        const jobResponse = await fetch(jobUrl, {
-          headers: {
-            'Accept': ACCEPT_HEADER,
-            'Authorization': AUTH_HEADER
-          }
-        });
-
-        if (!jobResponse.ok) {
-          const jobErrorResponse = await jobResponse.text();
-          return new Response(`Error: Unable to fetch job data. Status: ${jobResponse.status}`, { status: 500 });
-        }
-
-        const jobData = await jobResponse.json();
-        const job = jobData.jobs.find(j => j.name === JOB_NAME);
-
-        if (job) {
-          if (job.conclusion === null) {
-            return new Response("In progress...", { status: 200 });
-          } else {
-            return new Response(`${job.conclusion}`, { status: 200 });
-          }
-        }
+      if (!jobUrl) {
+        return new Response("Job not found", { status: 404 });
       }
 
-      return new Response("Job not found", { status: 404 });
+      const jobResponse = await fetch(jobUrl, {
+        method: "GET",
+        headers: {
+          "Authorization": AUTH_HEADER,
+          "Accept": ACCEPT_HEADER,
+          "User-Agent": "Cloudflare Worker"
+        }
+      });
 
+      if (!jobResponse.ok) {
+        return new Response("Unable to fetch job details", { status: 403 });
+      }
+
+      const jobData = await jobResponse.json();
+      const jobConclusion = jobData.jobs
+        .find(job => job.name === JOB_NAME)?.conclusion;
+
+      if (jobConclusion === "null" || !jobConclusion) {
+        return new Response("In progress...", { status: 200 });
+      }
+
+      return new Response(jobConclusion, { status: 200 });
     } catch (error) {
-      return new Response("Error: " + error.message, { status: 500 });
+      return new Response("An error occurred", { status: 500 });
     }
   }
 };
