@@ -31,7 +31,7 @@ export default {
       const finalUrlResponse = await fetch(finalUrl, { method: 'HEAD' });
       if (finalUrlResponse.ok) {
         return new Response(`\nresult: available\nlink: ${finalUrl}\n`, { status: 200 });
-      }
+      } 
 
       const track = Date.now().toString();
       const data = { ref: "main", inputs: { get, url, track } };
@@ -48,33 +48,7 @@ export default {
       });
 
       if (githubResponse.ok) {
-        let status;
-        do {
-          const fceResponse = await fetch("https://fce-conclusion.offici5l.workers.dev", {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: track
-          });
-
-          if (!fceResponse.ok) {
-            console.log("Control Log: Failed to get a valid response from fce-conclusion.");
-            console.log("Status Code:", fceResponse.status);
-            console.log("Response Body:", await fceResponse.text());
-            return new Response(`Error: Failed to get a valid response from fce-conclusion.`, { status: 500 });
-          }
-
-          status = await fceResponse.text().trim();
-
-          if (status.includes("In progress...")) {
-            await new Promise((resolve) => setTimeout(resolve, 10000)); //
-          }
-        } while (status.includes("In progress..."));
-
-        if (status.includes("success")) {
-          return new Response(`\nresult: It will be available\nlink: ${finalUrl}\nStatus: ${status}\n`, { status: 200 });
-        } else if (status.includes("failure")) {
-          return new Response(`\nresult: Failed to process the request\nStatus: ${status}\n`, { status: 500 });
-        }
+        return new Response(`\nresult: It will be available\nlink: ${finalUrl}\ntrack link: fce-conclusion.offici5l.workers.dev?${track}\n`, { status: 200 });
       } else {
         const githubResponseText = await githubResponse.text();
         return new Response(`GitHub Response Error: ${githubResponseText}`, { status: 500 });
