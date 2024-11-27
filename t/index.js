@@ -2,7 +2,7 @@ export default {
   async fetch(req, env) {
     try {
       const requestBody = await req.text();
-      const TOKEN = env.GITHUB_TOKEN;
+      const TOKEN = env.GTKK;
       const JOB_NAME = requestBody;
       
       const BASE_URL = 'https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/runs';
