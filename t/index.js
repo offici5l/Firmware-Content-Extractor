@@ -23,16 +23,20 @@ export default {
 
       const data = await response.json();
       
+      const jobUrls = [];
       data.workflow_runs.forEach(run => {
-        console.log('url:', run.url);
+        const urlWithJob = run.url + "/jobs";
+        if (urlWithJob.includes(JOB_NAME)) {
+          jobUrls.push(urlWithJob);
+        }
       });
 
-      const jobUrls = data.workflow_runs.map(run => run.url + "/jobs");
-      const jobUrl = jobUrls.find(url => url.includes(JOB_NAME));
-
-      if (!jobUrl) {
+      if (jobUrls.length === 0) {
+        console.log('Workflow Runs:', data.workflow_runs);
         return new Response("Job not found", { status: 404 });
       }
+
+      const jobUrl = jobUrls[0];
 
       const jobResponse = await fetch(jobUrl, {
         method: "GET",
@@ -48,6 +52,7 @@ export default {
       }
 
       const jobData = await jobResponse.json();
+
       const jobConclusion = jobData.jobs
         .find(job => job.name === JOB_NAME)?.conclusion;
 
