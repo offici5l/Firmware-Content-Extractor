@@ -27,3 +27,5 @@ ___
 [boot_img_miui_GOLDTRGlobal_OS1.0.1.0.UNQTRXM_a493b225be_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_miui_GOLDTRGlobal_OS1.0.1.0.UNQTRXM_a493b225be_14.0.zip)
 ___
 [boot_img_miui_GOLDTRGlobal_OS1.0.5.0.UNQTRXM_c6a8928502_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_miui_GOLDTRGlobal_OS1.0.5.0.UNQTRXM_c6a8928502_14.0.zip)
+___
+[boot_img_boot_img_miui_GOLDTRGlobal_OS1.0.5.0.UNQTRXM_c6a8928502_14.0.zip](https://github.com/offici5l/Firmware-Content-Extractor/releases/download/boot_img/boot_img_boot_img_miui_GOLDTRGlobal_OS1.0.5.0.UNQTRXM_c6a8928502_14.0.zip)
