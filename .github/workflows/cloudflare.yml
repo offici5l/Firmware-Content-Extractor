@@ -6,7 +6,7 @@ on:
 jobs:
   cloudflare:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy-fce
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
@@ -14,6 +14,16 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: cloudflare
+          secrets: |
+            GTKK
+        env:
+          GTKK: ${{ secrets.GTKK }}
+
+      - name: Deploy-fce-conclusion
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: t
           secrets: |
             GTKK
         env:
