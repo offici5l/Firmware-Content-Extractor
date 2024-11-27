@@ -48,7 +48,6 @@ export default {
       });
 
       if (githubResponse.ok) {
-        // إرسال الطلب إلى fce-conclusion
         let status;
         do {
           const fceResponse = await fetch("https://fce-conclusion.offici5l.workers.dev", {
@@ -58,7 +57,10 @@ export default {
           });
 
           if (!fceResponse.ok) {
-            return new Response(`Error: Failed to get a valid response from fce-conclusion.`, { status: 500 });
+            console.log("Control Log: Failed to get a valid response from fce-conclusion.");
+            console.log("Status Code:", fceResponse.status);
+            console.log("Response Body:", await fceResponse.text());
+            Response(`Error: Failed to get a valid response from fce-conclusion.`, { status: 500 });
           }
 
           status = await fceResponse.text().trim();
