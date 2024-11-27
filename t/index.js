@@ -6,11 +6,14 @@ export default {
       const JOB_NAME = requestBody;
 
       const BASE_URL = 'https://api.github.com/repos/offici5l/Firmware-Content-Extractor/actions/workflows/FCE.yml/runs';
-      const ACCEPT_HEADER = { 'Accept': 'application/vnd.github+json' };
-      const AUTH_HEADER = { 'Authorization': `token ${TOKEN}` };
+      const ACCEPT_HEADER = 'application/vnd.github+json';
+      const AUTH_HEADER = `token ${TOKEN}`;
 
       const runsResponse = await fetch(BASE_URL, {
-        headers: { ...ACCEPT_HEADER, ...AUTH_HEADER }
+        headers: {
+          'Accept': ACCEPT_HEADER,
+          'Authorization': AUTH_HEADER
+        }
       });
 
       if (!runsResponse.ok) {
@@ -22,7 +25,10 @@ export default {
 
       for (let jobUrl of jobUrls) {
         const jobResponse = await fetch(jobUrl, {
-          headers: { ...ACCEPT_HEADER, ...AUTH_HEADER }
+          headers: {
+            'Accept': ACCEPT_HEADER,
+            'Authorization': AUTH_HEADER
+          }
         });
 
         if (!jobResponse.ok) {
