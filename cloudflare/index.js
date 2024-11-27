@@ -60,7 +60,7 @@ export default {
             console.log("Control Log: Failed to get a valid response from fce-conclusion.");
             console.log("Status Code:", fceResponse.status);
             console.log("Response Body:", await fceResponse.text());
-            Response(`Error: Failed to get a valid response from fce-conclusion.`, { status: 500 });
+            return new Response(`Error: Failed to get a valid response from fce-conclusion.`, { status: 500 });
           }
 
           status = await fceResponse.text().trim();
