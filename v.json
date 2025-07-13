@@ -988,4 +988,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"air_eea_global-ota_full-OS2.0.5.0.VGQEUXM-user-15.0-a0087c1011": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
