@@ -1024,4 +1024,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"gold_global-ota_full-OS2.0.7.0.VNQMIXM-user-15.0-8c35297662": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
