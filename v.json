@@ -1048,4 +1048,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"lake_eea_global-ota_full-OS2.0.202.0.VGTEUXM-user-15.0-54fb735326": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
