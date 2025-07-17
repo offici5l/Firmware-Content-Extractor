@@ -1036,4 +1036,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"lake-ota_full-OS2.0.200.0.VGTCNXM-user-15.0-9dceefa59f": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
