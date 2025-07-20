@@ -1084,4 +1084,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_CAMELLIANIDGlobal_V12.5.4.0.RKSIDXM_1560e7500f_11.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
