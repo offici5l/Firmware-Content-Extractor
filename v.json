@@ -1102,4 +1102,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_FLEURIDGlobal_V13.0.5.0.SKEIDXM_ff7e9ffdbb_12.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
