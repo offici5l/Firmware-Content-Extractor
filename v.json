@@ -1096,4 +1096,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_XUNINGlobal_V14.0.2.0.TMUINXM_d3ce9e6580_13.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
