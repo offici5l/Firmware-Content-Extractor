@@ -1108,4 +1108,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_VIOLETINGlobal_V12.5.1.0.QFHINXM_125bf9d2a7_10.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
