@@ -1120,4 +1120,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_EVERGOINGlobal_OS1.0.1.0.TGBINXM_64950b1fe9_13.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
