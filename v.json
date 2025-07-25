@@ -1114,4 +1114,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"redwood_id_global-ota_full-OS2.0.6.0.UMSIDXM-user-14.0-8493d76250": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
