@@ -1132,4 +1132,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"tapas_global-ota_full-OS2.0.12.0.VMTMIXM-user-15.0-589efed2ad": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
