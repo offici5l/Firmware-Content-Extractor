@@ -1126,4 +1126,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"pipa-ota_full-OS2.0.10.0.UMZCNXM-user-14.0-0d89d2e7bf": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
