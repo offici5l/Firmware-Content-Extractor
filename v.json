@@ -1138,4 +1138,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_AGATEGlobal_OS1.0.16.0.UKWMIXM_8994e7a464_14.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
