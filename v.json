@@ -1150,4 +1150,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"duchamp_global-ota_full-OS2.0.200.0.VNLMIXM-user-15.0-7fddb30aa0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
