@@ -1174,4 +1174,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_YUNLUO_V14.0.7.0.TLYCNXM_f4252959ff_13.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
