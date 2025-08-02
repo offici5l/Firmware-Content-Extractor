@@ -1204,4 +1204,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_MOONSTONEIDGlobal_OS1.0.16.0.UMPIDXM_65f1b20921_14.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
