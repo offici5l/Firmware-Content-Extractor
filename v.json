@@ -1234,4 +1234,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"breeze_in_global-ota_full-OS2.0.7.0.VNUINXM-user-15.0-80b4253740": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
