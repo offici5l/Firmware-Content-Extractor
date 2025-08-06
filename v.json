@@ -1246,4 +1246,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"peridot-ota_full-OS2.0.203.0.VNPCNXM-user-15.0-882ff6f34c": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
