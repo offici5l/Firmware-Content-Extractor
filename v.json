@@ -1276,4 +1276,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_ZIRCONINGlobal_OS1.0.8.0.UNOINXM_07ce5a5c64_14.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
