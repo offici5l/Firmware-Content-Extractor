@@ -1282,4 +1282,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"moon_id_global-ota_full-OS2.0.201.0.VNTIDXM-user-15.0-c7f6a97d8d": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
