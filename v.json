@@ -1300,4 +1300,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"rothko_eea_global-ota_full-OS2.0.219.0.WNNEUXM-user-16.0-c243d37b42": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
