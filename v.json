@@ -1306,4 +1306,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_MARBLEGlobal_OS1.0.18.0.UMRMIXM_7249d26a3a_14.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
