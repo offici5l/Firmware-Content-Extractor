@@ -1318,4 +1318,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"duchamp_id_global-ota_full-OS2.0.201.0.VNLIDXM-user-15.0-db08268ebe": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
