@@ -1384,4 +1384,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_GINKGOINGlobal_V12.5.1.0.RCOINXM_574a275eaa_11.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
