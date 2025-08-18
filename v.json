@@ -1378,4 +1378,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"650_sign_RMX3771_11_C_OTA_1120_all_eYhz9E_00011011": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
