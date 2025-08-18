@@ -1252,4 +1252,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"323_sign_RMX3771_11_A_OTA_0400_all_5xwSiU_00011011": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
