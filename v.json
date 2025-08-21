@@ -1264,4 +1264,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"tanzanite_id_global-ota_full-OS2.0.202.0.VOGIDXM-user-15.0-6a38f7cc3c": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
