@@ -1270,4 +1270,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_ROSEMARYPIDGlobal_V14.0.8.0.TFFIDXM_ef954ed9a2_13.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
