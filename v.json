@@ -1294,4 +1294,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"air_in_global-ota_full-OS2.0.203.0.VGQINXM-user-15.0-ea36ef7512": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
