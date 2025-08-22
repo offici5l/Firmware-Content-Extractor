@@ -1306,4 +1306,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_MOONSTONEINGlobal_OS1.0.18.0.UMPINXM_b4a13ad8e4_14.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
