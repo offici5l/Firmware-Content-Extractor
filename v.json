@@ -1336,4 +1336,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"xaga_in_global-ota_full-OS2.0.3.0.ULOINXM-user-14.0-7a33ff9654": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
