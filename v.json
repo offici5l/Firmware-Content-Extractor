@@ -1354,4 +1354,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_AIRGlobal_V14.0.5.0.TGQMIXM_66dd2330fd_13.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
