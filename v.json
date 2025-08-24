@@ -1378,4 +1378,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"warm_in_global-ota_full-OS2.0.201.0.VGVINXM-user-15.0-6489a1d9d5": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
