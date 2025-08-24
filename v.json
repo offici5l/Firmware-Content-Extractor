@@ -1342,4 +1342,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_APOLLOGlobal_V14.0.4.0.SJDMIXM_e4e90d8dcc_12.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
