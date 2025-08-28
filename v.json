@@ -1426,4 +1426,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"moon_ru_global-ota_full-OS2.0.5.0.VNTRUXM-user-15.0-94b11bdfc4": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
