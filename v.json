@@ -1450,4 +1450,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_JOYEUSEIDGlobal_V14.0.1.0.SJZIDXM_d7566ea157_12.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
