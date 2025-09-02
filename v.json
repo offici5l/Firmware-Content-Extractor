@@ -1486,4 +1486,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"diting_global-ota_full-OS2.0.202.0.VLFMIXM-user-15.0-26b5c78d89": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
