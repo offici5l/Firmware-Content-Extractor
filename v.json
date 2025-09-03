@@ -1498,4 +1498,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"Lunaris-AOSP-pipa-OFFICIAL-3.2-Core-2025083108": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
