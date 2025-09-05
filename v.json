@@ -1516,4 +1516,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"miui_CURTANAINGlobal_V14.0.3.0.SJWINXM_9bf6b6a7ef_12.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
