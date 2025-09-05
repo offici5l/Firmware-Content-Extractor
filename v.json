@@ -1510,4 +1510,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"marble_global-ota_full-OS2.0.203.0.VMRMIXM-user-15.0-22893f0590": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
