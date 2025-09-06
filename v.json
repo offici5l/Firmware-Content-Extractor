@@ -1522,4 +1522,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_CITRUSINGlobal_V12.0.9.0.QJFINXM_76cf2ae080_10.0": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
