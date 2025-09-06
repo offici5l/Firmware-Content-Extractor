@@ -1528,4 +1528,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"moon_eea_global-ota_full-OS2.0.201.0.VNTEUXM-user-15.0-5e31983d6e": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "true"
+}
 }
