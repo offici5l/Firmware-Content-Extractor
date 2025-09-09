@@ -1552,4 +1552,10 @@
   "init_boot_img_zip": "true",
   "vendor_boot_img_zip": "true"
 }
+,
+"xuanyuan_id_global-ota_full-OS2.0.205.0.VOAIDXM-user-15.0-753f3ca01a.zip?t=1757242686&s=7de0779522810c7454606548acdd6687": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "true",
+  "vendor_boot_img_zip": "true"
+}
 }
