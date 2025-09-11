@@ -1564,4 +1564,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "true"
 }
+,
+"RMX1851_11_F.06_2022030210004702": {
+  "boot_img_zip": "false",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
