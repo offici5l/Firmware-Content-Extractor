@@ -1570,4 +1570,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"system-td-arm32_binder64-vanilla": {
+  "boot_img_zip": "false",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
