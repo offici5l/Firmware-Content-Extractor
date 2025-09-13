@@ -2,6 +2,11 @@ export default {
   async fetch(req, env) {
     // return new Response("\n Service under maintenance\n", { status: 400 });
 
+    return new Response(
+      "\nThe current service has been discontinued.\nPlease use the new service directly at:\nhttps://fce-app.onrender.com\n",
+      { status: 200 }
+    );
+
     const urlParams = new URLSearchParams(req.url.split("?")[1]);
     let url = urlParams.get("url");
 
