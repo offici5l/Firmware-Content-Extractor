@@ -1576,4 +1576,10 @@
   "init_boot_img_zip": "false",
   "vendor_boot_img_zip": "false"
 }
+,
+"miui_HMNote5HMNote5ProGlobal_V10.3.1.0.OEIMIXM_a823482d8d_8.1": {
+  "boot_img_zip": "true",
+  "init_boot_img_zip": "false",
+  "vendor_boot_img_zip": "false"
+}
 }
