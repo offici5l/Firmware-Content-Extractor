@@ -1,5 +1,4 @@
-### 📦 Firmware-Content-Extractor  
+## 📦 Firmware-Content-Extractor
 
-> ⚠️ **This project is archived and no longer maintained.**  
-> ➡️ **Use the new service here:**
- [fce-app.onrender.com](https://fce-app.onrender.com)
+> ⚠️ **Archived Project** – This repository is no longer maintained.  
+> 🚀 **Access the new service here:** [fce-app.onrender.com](https://fce-app.onrender.com)
